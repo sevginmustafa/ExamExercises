@@ -1,12 +1,12 @@
-﻿using CarShop.Data;
-using CarShop.Data.Models;
-using CarShop.ViewModels.Users;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace CarShop.Services
+﻿namespace CarShop.Services
 {
+    using CarShop.Data;
+    using CarShop.Data.Models;
+    using CarShop.ViewModels.Users;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+
     public class UsersService : IUsersService
     {
         private readonly ApplicationDbContext db;
@@ -16,14 +16,14 @@ namespace CarShop.Services
             this.db = db;
         }
 
-        public void Create(UserRegisterInputModel model)
+        public void Create(UserRegisterInputModel input)
         {
             var user = new User
             {
-                Username = model.Username,
-                Email = model.Email,
-                Password = ComputeHash(model.Password),
-                IsMechanic = model.UserType == "Mechanic" ? true : false,
+                Username = input.Username,
+                Email = input.Email,
+                Password = ComputeHash(input.Password),
+                IsMechanic = input.UserType == "Mechanic" ? true : false,
             };
 
             this.db.Users.Add(user);

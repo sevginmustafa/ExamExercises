@@ -1,12 +1,12 @@
-﻿using CarShop.ViewModels.Users;
-
-namespace CarShop.Services
+﻿namespace CarShop.Services
 {
+    using CarShop.ViewModels.Users;
+
     public interface IUsersService
     {
         string GetUserId(string username, string password);
 
-        void Create(UserRegisterInputModel model);
+        void Create(UserRegisterInputModel input);
 
         bool IsUsernameAvailable(string username);
 

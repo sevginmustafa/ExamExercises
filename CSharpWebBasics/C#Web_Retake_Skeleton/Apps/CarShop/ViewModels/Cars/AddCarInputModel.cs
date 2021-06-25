@@ -1,6 +1,6 @@
 ﻿namespace CarShop.ViewModels.Cars
 {
-    public  class AddCarInputModel
+    public class AddCarInputModel
     {
         public string Model { get; set; }
 

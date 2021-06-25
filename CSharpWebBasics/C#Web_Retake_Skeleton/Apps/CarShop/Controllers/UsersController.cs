@@ -1,11 +1,11 @@
-﻿using CarShop.Services;
-using CarShop.ViewModels.Users;
-using SUS.HTTP;
-using SUS.MvcFramework;
-using System.ComponentModel.DataAnnotations;
-
-namespace CarShop.Controllers
+﻿namespace CarShop.Controllers
 {
+    using CarShop.Services;
+    using CarShop.ViewModels.Users;
+    using SUS.HTTP;
+    using SUS.MvcFramework;
+    using System.ComponentModel.DataAnnotations;
+
     public class UsersController : Controller
     {
         private readonly IUsersService usersService;
@@ -42,7 +42,7 @@ namespace CarShop.Controllers
 
             this.SignIn(userId);
 
-            return this.Redirect("/");
+            return this.Redirect("/Cars/All");
         }
 
         public HttpResponse Register()
@@ -56,56 +56,56 @@ namespace CarShop.Controllers
         }
 
         [HttpPost]
-        public HttpResponse Register(UserRegisterInputModel model)
+        public HttpResponse Register(UserRegisterInputModel input)
         {
             if (this.IsUserSignedIn())
             {
                 return this.Redirect("/");
             }
 
-            if (model.Password != model.ConfirmPassword)
+            if (input.Password != input.ConfirmPassword)
             {
                 return this.Error("Passwords do not match!");
             }
 
-            if (string.IsNullOrWhiteSpace(model.Username) || model.Username.Length < 4 || model.Username.Length > 20)
+            if (string.IsNullOrWhiteSpace(input.Username) || input.Username.Length < 4 || input.Username.Length > 20)
             {
                 return this.Error("Username is required and should be between 4 and 20 characters!");
             }
 
-            if (string.IsNullOrWhiteSpace(model.Email))
+            if (string.IsNullOrWhiteSpace(input.Email))
             {
                 return this.Error("Email address is required!");
             }
 
-            if (!new EmailAddressAttribute().IsValid(model.Email))
+            if (!new EmailAddressAttribute().IsValid(input.Email))
             {
                 return this.Error("Email address is not valid");
             }
 
-            if (string.IsNullOrWhiteSpace(model.Password) || model.Password.Length < 4 || model.Password.Length > 20)
+            if (string.IsNullOrWhiteSpace(input.Password) || input.Password.Length < 4 || input.Password.Length > 20)
             {
                 return this.Error("Password is required and should be between 5 and 20 characters!");
             }
 
-            if (!this.usersService.IsUsernameAvailable(model.Username))
+            if (!this.usersService.IsUsernameAvailable(input.Username))
             {
                 return this.Error("Entered Username already exists! Please try again with different username!");
             }
 
-            if (!this.usersService.IsEmailAvailable(model.Email))
+            if (!this.usersService.IsEmailAvailable(input.Email))
             {
                 return this.Error("Entered email already exists! Please try again with different email!");
             }
 
-            this.usersService.Create(model);
+            this.usersService.Create(input);
 
             return this.Redirect("/Users/Login");
         }
 
         public HttpResponse Logout()
         {
-            if (this.IsUserSignedIn())
+            if (!this.IsUserSignedIn())
             {
                 return this.Redirect("/");
             }

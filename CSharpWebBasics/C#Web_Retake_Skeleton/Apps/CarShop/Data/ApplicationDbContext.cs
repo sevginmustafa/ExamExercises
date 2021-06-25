@@ -1,8 +1,8 @@
-﻿using CarShop.Data.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace CarShop.Data
+﻿namespace CarShop.Data
 {
+    using CarShop.Data.Models;
+    using Microsoft.EntityFrameworkCore;
+
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext()
@@ -24,7 +24,7 @@ namespace CarShop.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=CarShop;Integrated Security=true;");
+                optionsBuilder.UseSqlServer("Server=.;Database=CarShop;Integrated Security=true;");
             }
         }
     }

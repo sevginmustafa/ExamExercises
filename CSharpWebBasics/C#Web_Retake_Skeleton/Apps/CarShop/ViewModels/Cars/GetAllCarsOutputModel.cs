@@ -2,6 +2,8 @@
 {
     public class GetAllCarsOutputModel
     {
+        public string Id { get; set; }
+
         public string Image { get; set; }
 
         public string Model { get; set; }
@@ -10,8 +12,8 @@
 
         public string PlateNumber { get; set; }
 
-        public string FixedIssues { get; set; }
+        public int FixedIssues { get; set; }
 
-        public string RemainingIssues { get; set; }
+        public int RemainingIssues { get; set; }
     }
 }
