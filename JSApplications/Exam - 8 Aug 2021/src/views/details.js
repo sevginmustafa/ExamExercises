@@ -1,8 +1,8 @@
-import { deleteBook, getAllBooks, getBookById, getBookLikes, likeBook } from '../api/data.js';
+import { deleteBook, getBookById, getBookLikes, getUserLikes, likeBook } from '../api/data.js';
 import { html } from '../lib.js';
 import { getUserData } from '../util.js';
 
-const template = (onDelete, book, isOwner, onLike) => html`
+const template = (onDelete, book, isOwner, onLike, hasLiked) => html`
 <section id="details-page" class="details">
     <div class="book-information">
         <h3>${book.title}</h3>
@@ -16,7 +16,7 @@ const template = (onDelete, book, isOwner, onLike) => html`
                     : null
                 }
 
-            ${getUserData() && !isOwner ? html`<a @click=${onLike} class="button" href="#">Like</a>` : null}
+            ${getUserData() && !hasLiked && !isOwner ? html`<a @click=${onLike} class="button" href="#">Like</a>` : null}
                 
             <div class="likes">
                 <img class="hearts" src="/images/heart.png">
@@ -36,11 +36,12 @@ export async function detailsPage(ctx) {
     const book = await getBookById(bookId);
     const likes = await getBookLikes(bookId);
     book['likes'] = likes;
-
+    
     const userData = getUserData();
     const isOwner = userData && userData.id == book._ownerId;
+    const hasLiked = userData && await getUserLikes(bookId, userData.id) > 0;
 
-    ctx.render(template(onDelete, book, isOwner, onLike));
+    ctx.render(template(onDelete, book, isOwner, onLike, hasLiked));
 
     async function onDelete(event){
         event.preventDefault();
@@ -61,5 +62,5 @@ export async function detailsPage(ctx) {
         await likeBook({bookId, ownerId: userData.id});
 
         ctx.page.redirect(bookId);
-    }
+    } 
 }
