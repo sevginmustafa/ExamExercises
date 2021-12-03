@@ -212,7 +212,7 @@ describe('E2E tests', function () {
         });
     });
 
-    describe.only('Home Page [ 20 Points ]', () => {
+    describe('Home Page [ 20 Points ]', () => {
         it('show empty home page [ 2.5 Points ]', async () => {
             const { get } = await handle(endpoints.catalog);
             get([]);
@@ -533,7 +533,7 @@ describe('E2E tests', function () {
         });
     });
 
-    describe('BONUS: Comments [ 10 Points ]', async () => {
+    describe.only('BONUS: Comments [ 10 Points ]', async () => {
 
         it('Guest should not be able to see the section "Add new comment", but should be able to see the section "Comments" [ 1 Points ]', async () => {
             const data = mockData.catalog[0];

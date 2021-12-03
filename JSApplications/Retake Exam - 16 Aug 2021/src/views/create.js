@@ -1,8 +1,9 @@
+import { createGame } from '../api/data.js';
 import { html } from '../lib.js';
 
-const template = () => html`
+const template = (onCreate) => html`
 <section id="create-page" class="auth">
-    <form id="create">
+    <form @submit=${onCreate} id="create">
         <div class="container">
 
             <h1>Create Game</h1>
@@ -26,5 +27,32 @@ const template = () => html`
 </section>`;
 
 export function createPage(ctx) {
-    ctx.render(template());
+    ctx.render(template(onCreate));
+
+    async function onCreate(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+
+        const title = formData.get('title').trim();
+        const category = formData.get('category').trim();
+        const maxLevel = formData.get('maxLevel').trim();
+        const imageUrl = formData.get('imageUrl').trim();
+        const summary = formData.get('summary').trim();
+
+        if (title == '' || category == '' || maxLevel == '' || imageUrl == '' || summary == '') {
+            return alert('All fields are required!');
+        }
+
+        const game = {
+            title,
+            category,
+            maxLevel,
+            imageUrl,
+            summary
+        };
+
+        await createGame(game);
+        ctx.page.redirect('/');
+    }
 }

@@ -18,7 +18,7 @@ page('/login', loginPage);
 page('/register', registerPage);
 page('/details/:id', detailsPage);
 page('/create', createPage);
-page('/edit', editPage);
+page('/edit/:id', editPage);
 page('/catalog', catalogPage);
 page('/index.html', '/')
 
