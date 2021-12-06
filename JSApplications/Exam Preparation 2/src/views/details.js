@@ -1,8 +1,8 @@
-import { getCarById } from '../api/data.js';
+import { deleteCar, getCarById } from '../api/data.js';
 import { html } from '../lib.js';
 import { getUserData } from '../util.js';
 
-const template = (car, isOwner) => html`
+const template = (car, isOwner, onDelete) => html`
 <section id="listing-details">
     <h1>Details</h1>
     <div class="details-info">
@@ -20,8 +20,8 @@ const template = (car, isOwner) => html`
         ${isOwner 
             ? html`
                 <div class="listings-buttons">
-                    <a href="#" class="button-list">Edit</a>
-                    <a href="#" class="button-list">Delete</a>
+                    <a href="/edit/${car._id}" class="button-list">Edit</a>
+                    <a @click=${onDelete} href="#" class="button-list">Delete</a>
                 </div>` 
             : null}
     </div>
@@ -33,5 +33,18 @@ export async function detailsPage(ctx) {
     const car = await getCarById(carId);
     const isOwner = userData && userData.id == car._ownerId;
 
-    ctx.render(template(car, isOwner));
+    ctx.render(template(car, isOwner, onDelete));
+
+    async function onDelete(event){
+        event.preventDefault();
+
+        const confirmed = confirm('Are you sure you want to delete this car?')
+
+        if(confirmed){
+            await deleteCar(carId);
+
+            ctx.page.redirect('/catalog');
+            ctx.updateUserNav();
+        }
+    }
 }
