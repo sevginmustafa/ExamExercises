@@ -7,6 +7,7 @@ export const logout = api.logout;
 const endpoints = {
     allCars: '/data/cars?sortBy=_createdOn%20desc',
     myCars: (userId) => `/data/cars?where=_ownerId%3D%22${userId}%22&sortBy=_createdOn%20desc`,
+    search: (query) => `/data/cars?where=year%3D${query}`,
     car: '/data/cars/',
     create: '/data/cars',
     edit: '/data/cars/',
@@ -23,6 +24,10 @@ export async function getMyCars(userId) {
 
 export async function getCarById(id) {
     return api.get(endpoints.car + id);
+}
+
+export async function getSearchResults(query) {
+    return api.get(endpoints.search(query));
 }
 
 export async function createCar(data) {

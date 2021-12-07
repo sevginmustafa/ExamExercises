@@ -65,7 +65,7 @@ export async function editPage(ctx) {
             return alert('Price must be positive number!');
         }
 
-        const car = {
+        const newCar = {
             brand,
             model,
             description,
